@@ -111,7 +111,7 @@ export async function middleware(request: NextRequest) {
   ) {
     return NextResponse.next()
   }
-
+  
   const redirectPath = request.nextUrl.pathname === "/" ? "" : request.nextUrl.pathname
   const queryString = request.nextUrl.search ? request.nextUrl.search : ""
 
@@ -119,12 +119,28 @@ export async function middleware(request: NextRequest) {
   let response = NextResponse.redirect(redirectUrl, 307)
 
   // If no country code is set, redirect to the relevant region.
-  if (!urlHasCountryCode && countryCode && request.nextUrl.pathname !== `/${countryCode}${redirectPath}`) {
-    redirectUrl = `${request.nextUrl.origin}/${countryCode}${redirectPath}${queryString}`;
-    response = NextResponse.redirect(redirectUrl, 307);
-  }
-  
+  // if (!urlHasCountryCode && countryCode && request.nextUrl.pathname !== `/${countryCode}${redirectPath}`) {
+  //   redirectUrl = `${request.nextUrl.origin}/${countryCode}${redirectPath}${queryString}`;
+  //   response = NextResponse.redirect(redirectUrl, 307);
+  // }
+  //prevent Redirects when URL is already correct 
+  if (!urlHasCountryCode && countryCode) {
+    const currentPathWithCountry = `/${countryCode}${redirectPath}`;
+    if (request.nextUrl.pathname !== currentPathWithCountry) {
+      redirectUrl = `${request.nextUrl.origin}${currentPathWithCountry}${queryString}`
+      response = NextResponse.redirect(redirectUrl, 307)
+      //Debugging using console tools
+console.log({
+  countryCode,
+  urlHasCountryCode,
+  redirectPath,
+  currentPath: request.nextUrl.pathname,
+  onboardingCookie: onboardingCookie,
+  cartIdCookie: cartIdCookie,
+});
 
+    }
+  }
   // If a cart_id is in the params, set it as a cookie and redirect to the address step.
   if (cartId && !checkoutStep) {
     redirectUrl = `${redirectUrl}&step=address`
