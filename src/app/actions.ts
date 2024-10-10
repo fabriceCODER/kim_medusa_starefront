@@ -18,19 +18,16 @@ export async function updateRegion(countryCode: string, currentPath: string) {
   if (!region) {
     return null
   }
-
   try {
     if (cartId) {
       await updateCart(cartId, { region_id: region.id })
       revalidateTag("cart")
     }
-
     revalidateTag("regions")
     revalidateTag("products")
   } catch (e) {
     return "Error updating region"
   }
-
   redirect(`/${countryCode}${currentPath}`)
 }
 

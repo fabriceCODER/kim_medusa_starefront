@@ -1,6 +1,6 @@
 # About
 
-This folder contains an end to end testing suite written with playwright checking all of the main functionality provided by this template. Note it assumes you are using a postgres database on the backend and have configured a test database. This is required because the tests will **drop and recreate the test database** in order to ensure replicability between test runs.
+This folder contains an end to end testing suite written with playwright checking all of the main functionality provided by this template. Note using a postgres database on the backend and have configured a test database. This is required because the tests will **drop and recreate the test database** in order to ensure replicability between test runs.
 
 This test suite was built off of using the [medusa-starter-default](https://github.com/medusajs/medusa-starter-default) repository with the seed data from `data/seed.json`.
 
